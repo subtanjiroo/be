@@ -13,7 +13,7 @@ const app = express();
 const bodyParser = require('body-parser');
 // Define a route
 app.use(cors({
-  origin: 'https://minh-3gsb-3gptlqni2-subtanjiroos-projects.vercel.app/' // Đổi thành domain thật của frontend
+  origin: 'http://localhost:3000' // Đổi thành domain thật của frontend
 }));
 dotenv.config();
 app.use(express.json({ limit: "50mb" }));
