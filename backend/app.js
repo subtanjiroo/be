@@ -25,8 +25,8 @@ app.use("/Room", roomRoute);
 app.use("/logCilent", LCRoute);
 app.use("/logOrder", LORoute);
 app.use("/AUUser", AUU);
-app.get('/test', (req, res) => {
-  res.json({ message: 'API is working' });
+app.get("/", (req, res) => {
+  res.send("api is connected");
 });
 const port = process.env.PORT;
 
