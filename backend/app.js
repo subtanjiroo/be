@@ -13,7 +13,7 @@ const app = express();
 const bodyParser = require('body-parser');
 // Define a route
 app.use(cors({
-  origin: 'cv2024.ahandu.com' // Đổi thành domain thật của frontend
+  origin: 'https://cv2024.ahandu.com/' // Đổi thành domain thật của frontend
 }));
 dotenv.config();
 app.use(express.json({ limit: "50mb" }));
