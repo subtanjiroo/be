@@ -7,10 +7,7 @@ const jwt = require("jsonwebtoken");
 dotenv.config();
 
 const date = new Date();
-const validatePassword = (password) => {
-  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-  return regex.test(password);
-};
+
 
 const registerClient = async (req, res) => {
   try {
@@ -27,13 +24,7 @@ const registerClient = async (req, res) => {
       } else {
         const userData = await Client.find();
         
-        // Validate password requirements
-        if (!validatePassword(dataRequest.password)) {
-          return res.status(200).send({
-            code: 401,
-            mesg: "Mật khẩu phải có ít nhất 8 ký tự, bao gồm ít nhất một chữ cái, một số và một ký tự đặc biệt!",
-          });
-        }
+       
 
         const registerClient = new Client({
           id: userData.length + 1,
@@ -169,11 +160,13 @@ const UHS = async (req,res)=>{
 
     let HS;
     if(dataRequest.curPassword == decryptedPassword){
-     const newPass = CryptoJs.AES.encrypt(
-      dataRequest.newPassword,
-      process.env.PASS_SECRECT
-    ).toString()
-    console.log(dataRequest)
+     
+    if(dataRequest.newPassword!="" && dataRequest.newPassword){
+      console.log(dataRequest.newPassword)
+      const newPass = CryptoJs.AES.encrypt(
+        dataRequest.newPassword,
+        process.env.PASS_SECRECT
+      ).toString()
       HS = await Client.findOneAndUpdate({
         _id:dataRequest._id
       },
@@ -189,7 +182,22 @@ const UHS = async (req,res)=>{
       {
         new:true
       })
-      console.log(HS)
+    }else{
+      HS = await Client.findOneAndUpdate({
+        _id:dataRequest._id
+      },
+      {
+        $set:{
+          name:dataRequest.name,
+          email:dataRequest.email,
+          phone_number:dataRequest.phone_number,
+          BoD:dataRequest.BoD,
+        }
+      },
+      {
+        new:true
+      })
+    }
     }else{
       return res.status(200).send({code:403,mesg:"mật khẩu hiện tại bạn vừa nhập sai"})
     }
